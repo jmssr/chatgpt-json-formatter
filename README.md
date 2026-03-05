@@ -141,7 +141,7 @@ MIT License - feel free to use and modify for your own purposes.
 
 ## Author
 
-Built by JMSSR as part of ongoing learning in Python development and AI technologies.
+Built by JMSSR with AI assistance as part of ongoing learning in Python development and AI technologies.
 
 ---
 
