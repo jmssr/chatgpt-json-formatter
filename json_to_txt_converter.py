@@ -16,29 +16,35 @@ def process_message(message_data):
     
     # Check if this message has the 'parts' field
     if 'content' in message_data and 'parts' in message_data['content']:
-        
-        # Extract create_time
-        if 'create_time' in message_data and message_data['create_time'] is not None:
-            create_time_value = message_data['create_time']
-            create_time = epoch_to_readable(create_time_value)
-            output_lines.append(f"Time: {create_time}")
-        
-        # Extract role and format it
-        if 'author' in message_data and 'role' in message_data['author']:
-            role = message_data['author']['role']
-            if role == 'user':
-                output_lines.append("Me:")
-            elif role == 'assistant':
-                output_lines.append("ChatGPT:")
-            else:
-                output_lines.append(f"{role}:")
-        
-        # Print parts as-is
         parts = message_data['content']['parts']
-        for part in parts:
-            output_lines.append(str(part))
         
-        output_lines.append("")  # Add blank line for separation
+        # Check if parts has any non-empty content
+        has_content = any(part and str(part).strip() for part in parts)
+        
+        # Only process if there's actual content
+        if has_content:
+            # Extract create_time
+            if 'create_time' in message_data and message_data['create_time'] is not None:
+                create_time_value = message_data['create_time']
+                create_time = epoch_to_readable(create_time_value)
+                output_lines.append(f"Time: {create_time}")
+            
+            # Extract role and format it
+            if 'author' in message_data and 'role' in message_data['author']:
+                role = message_data['author']['role']
+                if role == 'user':
+                    output_lines.append("Me:")
+                elif role == 'assistant':
+                    output_lines.append("ChatGPT:")
+                else:
+                    output_lines.append(f"{role}:")
+            
+            # Print parts as-is (only non-empty ones)
+            for part in parts:
+                if part and str(part).strip():
+                    output_lines.append(str(part))
+            
+            output_lines.append("")  # Add blank line for separation
     
     return output_lines, create_time_value
 
